@@ -1,1 +1,1 @@
-<h1>estudiantes view</h1>
+<h1>estudiantes create</h1>
