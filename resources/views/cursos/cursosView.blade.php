@@ -1,1 +1,12 @@
-<h1>view curso </h1>
+
+@extends('layout.app')
+
+@section('sidebar')
+    @parent
+
+   
+@endsection
+
+@section('content')
+    <h1>View cursos</h1>
+@endsection	
