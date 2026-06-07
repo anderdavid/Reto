@@ -34,11 +34,11 @@
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Estudiantes
+                    Negocios
                   </a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/estudiantes/show">Ver</a>
-                    <a class="dropdown-item" href="/estudiantes/create">Crear</a>
+                    <a class="dropdown-item" href="/negocios/show">Ver</a>
+                    <a class="dropdown-item" href="/negocios/create">Crear</a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
