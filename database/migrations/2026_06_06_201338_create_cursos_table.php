@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string("nombre");
             $table->string("horario");
-            $table->date("fecha inicio");
+            $table->date("fecha_inicio");
             $table->date("fecha_fin");
             $table->integer('numero_estudiantes')->nullable()->default(0);
             $table->timestamps();

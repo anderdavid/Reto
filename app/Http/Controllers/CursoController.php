@@ -19,7 +19,8 @@ class CursoController extends Controller
      */
     public function create()
     {
-        return view('/cursos/cursosCreate');
+        $horarios = ["7am-9am", "9am-11am", "11am-1pm", "2pm-4pm"];
+        return view('/cursos/cursosCreate',['horarios'=>$horarios]);
     }
 
     /**
@@ -27,8 +28,16 @@ class CursoController extends Controller
      */
     public function store(Request $request)
     {
-       echo "store";
+      $curso = new \App\Models\cursos;
+      $curso->nombre = $request->nombre_curso;
+      $curso->horario = $request->horario;
+      $curso->fecha_inicio = $request->fecha_inicio;
+      $curso->fecha_fin = $request->fecha_fin;
+      $curso->save();
+
+      return redirect('/cursos/show');
     }
+   
 
     /**
      * Display the specified resource.

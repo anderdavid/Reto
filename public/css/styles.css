@@ -1,0 +1,17 @@
+.container{
+	margin-top:5rem;
+}
+.title-container{
+	margin-left: 6rem;
+	margin-bottom: 2rem;
+}
+footer{
+	background-color:#58676B;
+	padding: 25px 40px;
+	margin-top: 100px;
+	
+
+}
+footer p{
+	color:#e4e4e4;
+}

@@ -25,7 +25,7 @@
     <body>
         @section('sidebar')
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-                <a class="navbar-brand" href="#">Reto NativApps</a>
+                <a class="navbar-brand" href="#">Reto</a>
             </nav>
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
              
@@ -67,8 +67,8 @@
         <div class="container">
             @yield('content')
         </div>
-       <footer style="margin-top:300px">
-        <p>Creado por Anderson Rodriguez para prueba tecnica, 2020</p>
+       <footer>
+        <p>Created by SmartAppSolutions</p>
       </footer>
     </body>
 </html>
