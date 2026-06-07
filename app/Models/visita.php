@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class negocio extends Model
+class visita extends Model
 {
-    protected $table = "negocios";
+    protected $table = "visitas";
 
     public function getIdPropiedad(){
         return $this->belongsTo('App\Models\propiedad','propiedad_id');
     }
 
-    public function visitas(){
-        return $this->hasMany('App\Models\visitas');
+    public function getIdNegocio(){
+        return $this->belongsTo('App\Models\negocio','negocio_id');
     }
 }

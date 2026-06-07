@@ -12,13 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('visitas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer("negocio_id");
-            $table->integer("propiedad_id");
-            $table->integer("comision");
-            $table->integer("calificacion");
-            $table->integer("evaluacion");
-            $table->date("fecha");
+            $table->id();
+            $table->integer('comision');
+            $table->integer('calificacion');
+            $table->integer('evaluacion');
+            $table->date('fecha');
+
+            $table->foreignId('propiedad_id')
+                ->nullable()
+                ->constrained('propiedades')
+                ->onDelete('cascade');
+
+            $table->foreignId('negocio_id')
+                ->nullable()
+                ->constrained('negocios')
+                ->onDelete('cascade');
             
             $table->timestamps();
         });
