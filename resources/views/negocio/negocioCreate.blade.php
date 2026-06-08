@@ -11,6 +11,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <form method="POST" action="/negocios/store">
+                {{ csrf_field() }}
                 <div class="card">
                     <div class="card-body">
                         <div class="subtitle-container">
@@ -19,6 +20,11 @@
                         <div class="form-group">
                             <label for="nombre">Descripcion: </label>
                             <input class="form-control" type="text" name="descripcion" placeholder="Ingrese descripcion propiedad" required="true">
+                        </div>
+
+                         <div class="form-group">
+                            <label for="nombre">Direccion: </label>
+                            <input class="form-control" type="text" name="direccion" placeholder="Ingrese direccion" required="true">
                         </div>
 
                         <div class="form-group">
@@ -33,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="nombre">Valor: </label>
-                            <input class="form-control" type="text" name="telefonoPropietario" placeholder="Ingrese valor" required="true">
+                            <input class="form-control" type="text" name="valor" placeholder="Ingrese valor" required="true">
                         </div>
 
                         <div class="form-group">

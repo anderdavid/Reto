@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\propiedad;
+use \App\Models\negocio;
 
 class NegociosController extends Controller
 {
@@ -28,7 +30,28 @@ class NegociosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        echo "store";
+        $mPropiedad = new propiedad;
+        $mNegocio = new negocio;
+
+        $mPropiedad->descripcion = $request->descripcion;
+        $mPropiedad->nombrePropietario = $request->nombrePropietario;
+        $mPropiedad->telefonoPropietario = $request->telefonoPropietario;
+        $mPropiedad->valor = $request->valor;
+        $mPropiedad->direccion = $request->direccion;
+        $mPropiedad->save();
+
+        $mNegocio->fecha = $request->fecha;
+        $mNegocio->nombreEmpleado = $request->nombreEmpleado;
+        $mNegocio->categoria = $request->categoria;
+        $mNegocio->puntosConcertados = $request->puntosConcertados;
+        $mNegocio->puntosCaptados = $request->puntosCaptados;
+
+        $mNegocio->getIdPropiedad()->associate($mPropiedad);
+        $mNegocio->save();
+
+        return redirect('/negocios/show');
+    
     }
 
     /**

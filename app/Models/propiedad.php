@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class propiedad extends Model
 {
-    protected $table = "propiedad";
+    protected $table = "propiedades";
 
     public function negocio(){
         return $this->hasOne('App\Models\negocio');
