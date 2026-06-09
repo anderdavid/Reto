@@ -24,10 +24,11 @@
     </head>
     <body>
         @section('sidebar')
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-                <a class="navbar-brand" href="#">Reto</a>
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style ="background: #45627f !important; padding: 20px 40px 20px 30px;">
+                
+                <a class="navbar-brand" href="#">SOLINAR PUNTOS DE NEGOCIO</a>
             </nav>
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style ="background: #3f5a74 !important;">
              
             <!-- Links -->
               <ul class="navbar-nav">
@@ -41,15 +42,15 @@
                     <a class="dropdown-item" href="/negocios/create">Crear</a>
                   </div>
                 </li>
-                <li class="nav-item dropdown">
+               <!--  <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                     Cursos
                   </a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="/cursos/show">Ver</a>
                     <a class="dropdown-item" href="/cursos/create">Crear</a>
-                  </div>
-                   <li class="nav-item dropdown">
+                  </div> -->
+                 <!--   <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                     Funciones
                   </a>
@@ -58,7 +59,7 @@
                     <a class="dropdown-item" href="/funciones/top3">Top 3</a>
                   </div>
                 </li>
-                </li>
+                </li> -->
               </ul>
             </nav>
 
@@ -67,8 +68,8 @@
         <div class="container">
             @yield('content')
         </div>
-       <footer>
+      <!--  <footer>
         <p>Created by SmartAppSolutions</p>
-      </footer>
+      </footer> -->
     </body>
 </html>
