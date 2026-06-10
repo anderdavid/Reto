@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string("direccion");
             $table->string('categoria');
             $table->integer("valor");
+            $table->date('fecha');
+            $table->string('calificacion');
             $table->integer('comision');
             $table->integer('evaluacion');
-            $table->date('fecha');
-            $table->integer('calificacion');
             
             $table->timestamps();
         });

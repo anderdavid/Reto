@@ -4,15 +4,68 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\visita;
+use Illuminate\Support\Facades\DB;
+use App\Services\NegocioService;
 
 class VisitasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index(Request $request)
+    {  
+        $mService = new NegocioService;
+        $comisionTotal = null;
+
+        $year = $request->get('year');
+        $month = $request->get('month');
+        $nombreEmpleado = $request->get('nombreEmpleado');
+
+        $numberMonth = $mService->castMonth($month);
+
+        $months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        $years = ['2026','2027','2028','2029','2030'];
+
+
+        if(isset($year) && isset($month) && isset($nombreEmpleado)){
+           $visitas = DB::table('visitas as v')
+                ->select('v.*')
+                ->whereMonth('v.fecha', $numberMonth)
+                ->whereYear('v.fecha', $year)
+                ->where('v.nombreEmpleado', $nombreEmpleado)
+                ->orderBy('v.fecha')
+                ->paginate(9);
+
+            $comisionTotal = DB::table('visitas as v')
+                ->select(
+                    DB::raw('SUM(v.comision) as comision'),
+                )
+                ->whereMonth('v.fecha', $numberMonth)
+                ->whereYear('v.fecha', $year)
+                ->where('v.nombreEmpleado', $nombreEmpleado)
+                ->groupBy('v.nombreEmpleado')
+                ->first();
+
+        }else{
+            $visitas = DB::table('visitas as v')
+                ->select('v.*')
+                ->orderBy('v.fecha')
+                ->paginate(9);
+
+        }
+        return view('visitas/visitasView',compact('visitas'), 
+            [
+                'currentMonth'=>$month, 
+                'currentYear'=>$year,
+                'months'=> $months,
+                'years'=>$years,
+                'nombreEmpleado'=> $nombreEmpleado,
+                'numberMonth'=> $numberMonth,
+                'comision'=> $comisionTotal
+               /*  'puntos' =>$puntos, */
+               /*  'valorPunto'=>$valorPunto */
+            ]
+        );
     }
 
     /**
@@ -43,6 +96,8 @@ class VisitasController extends Controller
         $mVisita->calificacion=$request->calificacion;
         $mVisita->comision=$request->comision;
         $mVisita->save(); 
+
+        return redirect('/visitas/show');
     }
 
     /**
