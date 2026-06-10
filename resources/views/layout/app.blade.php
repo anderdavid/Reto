@@ -42,6 +42,15 @@
                     <a class="dropdown-item" href="/negocios/create">Crear</a>
                   </div>
                 </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    Visitas
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/visitas/show">Ver</a>
+                    <a class="dropdown-item" href="/visitas/create">Crear</a>
+                  </div>
+                </li>
               </ul>
             </nav>
 

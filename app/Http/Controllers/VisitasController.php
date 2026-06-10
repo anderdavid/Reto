@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\visita;
 
 class VisitasController extends Controller
 {
@@ -19,7 +20,8 @@ class VisitasController extends Controller
      */
     public function create()
     {
-        //
+        $categorias = ["Arriendo", "Anticres", "Venta"];
+        return view('/visitas/visitasCreate',['categorias'=>$categorias]);
     }
 
     /**
@@ -27,7 +29,20 @@ class VisitasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mVisita = new visita;
+     
+        $mVisita->nombreEmpleado = $request->nombreEmpleado;
+        $mVisita->nombrePropietario=$request->nombrePropietario;
+        $mVisita->telefonoPropietario=$request->telefonoPropietario;
+        $mVisita->descripcion=$request->descripcion;
+        $mVisita->direccion=$request->direccion;
+        $mVisita->categoria=$request->categoria;
+        $mVisita->valor=$request->valor;
+        $mVisita->evaluacion=$request->evaluacion;
+        $mVisita->fecha=$request->fecha;
+        $mVisita->calificacion=$request->calificacion;
+        $mVisita->comision=$request->comision;
+        $mVisita->save(); 
     }
 
     /**

@@ -78,7 +78,7 @@
 
                         <div class="form-group">
                             <label for="nombre">Puntos Captados: </label>
-                            <input class="form-control" type="number" name="puntosCaptados" placeholder="Puntos Concertados" required="true">
+                            <input class="form-control" type="number" name="puntosCaptados" placeholder="Puntos Captados" required="true">
                         </div>
 
                         <div class="form-group">

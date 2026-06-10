@@ -20,10 +20,16 @@ Route::get('/negocios/edit/{id}', [NegociosController::class, 'edit']);
 Route::post('/negocios/update/{id}', [NegociosController::class, 'update']);
 Route::get('/negocios/destroy/{id}', [NegociosController::class, 'destroy']); */
 
-/* Route::get('/visitas', [VisitasController::class, 'index']);
+
+Route::get('/visitas', [VisitasController::class, 'index']);
 Route::get('/visitas/show', [VisitasController::class, 'index']);
 Route::get('/visitas/create', [VisitasController::class, 'create']);
 Route::post('/visitas/store', [VisitasController::class, 'store']);
+
+
+/* 
+
+
 Route::get('/visitas/show/{id}', [VisitasController::class, 'show']);
 Route::get('/visitas/edit/{id}', [VisitasController::class, 'edit']);
 Route::post('/visitas/update/{id}', [VisitasController::class, 'update']); 
