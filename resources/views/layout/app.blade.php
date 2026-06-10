@@ -42,30 +42,12 @@
                     <a class="dropdown-item" href="/negocios/create">Crear</a>
                   </div>
                 </li>
-               <!--  <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Cursos
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/cursos/show">Ver</a>
-                    <a class="dropdown-item" href="/cursos/create">Crear</a>
-                  </div> -->
-                 <!--   <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Funciones
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/funciones/asignarCursos">Asignar Curso</a>
-                    <a class="dropdown-item" href="/funciones/top3">Top 3</a>
-                  </div>
-                </li>
-                </li> -->
               </ul>
             </nav>
 
         @show
 
-        <div class="container">
+        <div class="mContainer">
             @yield('content')
         </div>
       <!--  <footer>

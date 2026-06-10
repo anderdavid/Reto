@@ -6,9 +6,7 @@
 
 @section('content')
 
-   <!--  numberMonth:{{$numberMonth}}
-   
-    <h1 class="text-secondary" style= "line-height:24px; font-size:24px; margin-bottom:60px;">Puntos de negocio</h1> -->
+<div class= "viewContainer">
     <div>
         <form method="GET">
             {{ csrf_field() }}
@@ -41,10 +39,10 @@
             <tr>
                 <th>Nombre Empleado</th>
                 <th>Nombre Propietario</th>
-                <th>Telefono Propietario</th>
-                <th>descripcion</th>
-                <th>direccion</th>
-                <th>Categoria</th>
+                <th>Teléfono Propietario</th>
+                <th>Descripción</th>
+                <th>Dirección</th>
+                <th>Categoría</th>
                 <th>Valor</th>
                 <th>Fecha</th>
                 <th>Puntos Concertados</th>
@@ -96,6 +94,6 @@
         </div>
     @endisset
 
-   
+</div>  
 
 @endsection
