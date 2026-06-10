@@ -7,12 +7,4 @@ use Illuminate\Database\Eloquent\Model;
 class negocio extends Model
 {
     protected $table = "negocios";
-
-    public function getIdPropiedad(){
-        return $this->belongsTo('App\Models\propiedad','propiedad_id');
-    }
-
-    public function visitas(){
-        return $this->hasMany('App\Models\visitas');
-    }
 }

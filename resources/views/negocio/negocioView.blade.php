@@ -30,7 +30,7 @@
                         <option value="{{$year}}" {{$currentYear == $year ? 'selected': ''}}>{{$year}}</option>
                         @endforeach
                     </select>
-                <input type="submit" value="filtrar" class ="btn btn-primary" style="margin-left: 20px; margin-right: 10px"/>
+                <input type="submit" value="Calcular" class ="btn btn-primary" style="margin-left: 20px; margin-right: 10px"/>
             </div>
             
         </form>
@@ -39,23 +39,31 @@
     <table class="table table-borderless table-responsive-md mt-3">
         <thead class="thead-light">
             <tr>
-                <th>Fecha</th>
                 <th>Nombre Empleado</th>
+                <th>Nombre Propietario</th>
+                <th>Telefono Propietario</th>
+                <th>descripcion</th>
+                <th>direccion</th>
                 <th>Categoria</th>
+                <th>Valor</th>
+                <th>Fecha</th>
                 <th>Puntos Concertados</th>
                 <th>Puntos Captados</th>
-                <th>Propiedad </th>
             </tr>
         </thead>
         <tbody>
              @foreach($negocios as $negocio)
                 <tr>
-                    <td>{{$negocio->fecha}}</td>
                     <td>{{$negocio->nombreEmpleado}}</td>
+                    <td>{{$negocio->nombrePropietario}}</td>
+                    <td>{{$negocio->telefonoPropietario}}</td>
+                    <td>{{$negocio->descripcion}}</td>
+                    <td>{{$negocio->direccion}}</td>
                     <td>{{$negocio->categoria}}</td>
+                    <td>{{$negocio->valor}}</td>
+                    <td>{{$negocio->fecha}}</td>
                     <td>{{$negocio->puntosConcertados}}</td>
                     <td>{{$negocio->puntosCaptados}}</td>
-                    <td>{{$negocio->descripcion}} </td>
                 </tr>
             @endforeach
         </tbody>

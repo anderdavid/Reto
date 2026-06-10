@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('negocios', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
             $table->string('nombreEmpleado');
+            $table->string("nombrePropietario");
+            $table->string("telefonoPropietario");
+            $table->string("descripcion");
+            $table->string("direccion");
             $table->string('categoria');
+            $table->integer("valor");
+            $table->date('fecha');
             $table->integer('puntosConcertados');
             $table->integer('puntosCaptados');
-            
-            $table->foreignId('propiedad_id')
-                ->nullable()
-                ->constrained('propiedades')
-                ->onDelete('cascade');
-
-
             $table->timestamps();
         });
     }

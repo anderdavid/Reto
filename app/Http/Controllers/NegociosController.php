@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\propiedad;
 use \App\Models\negocio;
 use Illuminate\Support\Facades\DB;
 use App\Services\NegocioService;
@@ -32,8 +31,7 @@ class NegociosController extends Controller
 
         if(isset($year) && isset($month) && isset($nombreEmpleado)){
            $negocios = DB::table('negocios as n')
-                ->join('propiedades as p', 'n.propiedad_id', '=', 'p.id')
-                ->select('n.*', 'p.descripcion')
+                ->select('n.*')
                 ->whereMonth('n.fecha', $numberMonth)
                 ->whereYear('n.fecha', $year)
                 ->where('n.nombreEmpleado', $nombreEmpleado)
@@ -41,7 +39,6 @@ class NegociosController extends Controller
                 ->paginate(9);
 
             $puntos = DB::table('negocios as n')
-                ->join('propiedades as p', 'n.propiedad_id', '=', 'p.id')
                 ->select(
                     DB::raw('SUM(n.puntosCaptados) as puntosCaptados'),
                     DB::raw('SUM(n.puntosConcertados) as puntosConcertados')
@@ -54,8 +51,7 @@ class NegociosController extends Controller
 
         }else{
             $negocios = DB::table('negocios as n')
-                ->join('propiedades as p', 'n.propiedad_id', '=', 'p.id')
-                ->select('n.*','p.descripcion')
+                ->select('n.*')
                 ->orderBy('n.fecha')
                 ->paginate(9);
 
@@ -92,23 +88,18 @@ class NegociosController extends Controller
      */
     public function store(Request $request)
     {
-        $mPropiedad = new propiedad;
+       
         $mNegocio = new negocio;
-
-        $mPropiedad->descripcion = $request->descripcion;
-        $mPropiedad->nombrePropietario = $request->nombrePropietario;
-        $mPropiedad->telefonoPropietario = $request->telefonoPropietario;
-        $mPropiedad->valor = $request->valor;
-        $mPropiedad->direccion = $request->direccion;
-        $mPropiedad->save();
-
-        $mNegocio->fecha = $request->fecha;
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
+        $mNegocio->nombrePropietario = $request->nombrePropietario;
+        $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+        $mNegocio->descripcion = $request->descripcion;
+        $mNegocio->direccion = $request->direccion;
         $mNegocio->categoria = $request->categoria;
+        $mNegocio->valor = $request->valor;
+        $mNegocio->fecha = $request->fecha;
         $mNegocio->puntosConcertados = $request->puntosConcertados;
         $mNegocio->puntosCaptados = $request->puntosCaptados;
-
-        $mNegocio->getIdPropiedad()->associate($mPropiedad);
         $mNegocio->save();
 
         return redirect('/negocios/show');
