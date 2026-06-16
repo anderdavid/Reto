@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('categoria');
             $table->integer("valor");
             $table->date('fecha');
-            $table->integer('puntosConcertados');
-            $table->integer('puntosCaptados');
+            $table->boolean('esConcertado');
+            $table->integer('puntos');
             $table->timestamps();
         });
     }

@@ -55,7 +55,7 @@
 
                         <div class="form-group">
                             <label for="sel1">Fecha de Negocio:</label>
-                            <input id="datepicker1" width="276" name="fecha" value="2026-06-10" />
+                            <input id="datepicker1" width="276" name="fecha" value="{{ now()->format('Y-m-d') }}" />
                             <script>
                                 $('#datepicker1').datepicker({
 
@@ -70,22 +70,10 @@
                             <label for="nombre">Empleado: </label>
                             <input class="form-control" type="text" name="nombreEmpleado" placeholder="Ingrese nombre del Empleado " required="true">
                         </div>
-
-                        <!-- <div class="form-group">
-                            <label for="nombre">Es concertado: </label>
-                            <input class="form-control" type="radio" name="puntosConcertados" placeholder="Puntos Concertados" required="true">
-                        </div> -->
-
                         <div class="checkboxContainer">
                             <label>Es concertado:</label>
-                            <input type="checkbox" value="">
+                            <input type="checkbox" name="esConcertado">
                         </div>
-                        <div class="form-group">
-                            <label for="nombre"> </label>
-                            <input class="form-control" type="number" name="puntosCaptados" placeholder="Puntos Captados" required="true">
-                        </div>
-                        
-
                         <div class="form-group">
                             <input class="btn btn-primary" type="submit" name="Guardar" value="Guardar">
                         </div>

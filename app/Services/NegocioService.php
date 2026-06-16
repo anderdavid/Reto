@@ -4,6 +4,8 @@ namespace App\Services;
 
 class NegocioService
 {
+    public int $points = 0;
+    
     public function castMonth($month)
     {
         if($month == "Enero"){
@@ -46,25 +48,26 @@ class NegocioService
         return "";
     }
 
-    public function getPoints($category){
+    public function setPoints($category){
         if($category == "Arriendo"){
-            return 1;
+            $this->points = 1;
         }
         if($category == "Anticres"){
-            return 3;
+           $this->points = 3;
         }
         if($category == "Venta"){
-            return 2;
+           $this->points = 2;
         }
     }
 
-    public function getConcertedPoints($concerted){
+    public function addConcertedPoints($concerted){
         if($concerted){
-            return 2;
+          $this->points = $this->points + 2;
         }
-        else{
-            return 0; 
-        }
+    }
+
+    public function getPoints(){
+        return $this->points;
     }
 
     public function getComisionPropuesta($valor){

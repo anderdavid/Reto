@@ -45,8 +45,9 @@
                 <th>Categoría</th>
                 <th>Valor</th>
                 <th>Fecha</th>
-                <th>Puntos Concertados</th>
-                <th>Puntos Captados</th>
+                <th>Es Concertado</th>
+                <th>Puntos</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -58,10 +59,19 @@
                     <td>{{$negocio->descripcion}}</td>
                     <td>{{$negocio->direccion}}</td>
                     <td>{{$negocio->categoria}}</td>
-                    <td>{{$negocio->valor}}</td>
+                    <td>{{number_format($negocio->valor, 0, ',', '.')}}</td>
                     <td>{{$negocio->fecha}}</td>
-                    <td>{{$negocio->puntosConcertados}}</td>
-                    <td>{{$negocio->puntosCaptados}}</td>
+                    <td>{{$negocio->esConcertado ? "Si" : "No"}}</td>
+                    <td>{{$negocio->puntos}}</td>
+                    <td id="action">
+						<div class="row">
+						    <div class="col-md-3">
+								<a  href="/negocios/edit/1"><i class="icono-action far fa-edit"></i>
+									<span class="tooltiptext">Editar</span>
+								</a>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -74,22 +84,13 @@
     @isset($puntos)
         <div class="puntosContainer">
             <div>
-                <label>Puntos Captados:</label>
-                <span>{{$puntos->puntosCaptados}}</span>
+                <label>Puntos:</label>
+                <span>{{$puntos->puntos}}</span>
             </div>
-            <div>
-                <label>Puntos Concertados:</label>
-                <span>{{$puntos->puntosConcertados}}</span>
-            </div>
-
-             <div>
-                <label>Total Puntos:</label>
-                <span>{{($puntos->puntosConcertados + $puntos->puntosCaptados)}}</span>
-            </div>
-
+          
             <div>
                 <label>Total a pagar:</label>
-                <span>{{($puntos->puntosConcertados + $puntos->puntosCaptados)*$valorPunto}}</span>
+                <span>{{($puntos->puntos)*$valorPunto}}</span>
             </div>
         </div>
     @endisset

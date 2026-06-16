@@ -46,6 +46,24 @@ table{
 	gap: 15px;
 }
 
+.tooltiptext{
+  visibility: hidden;
+  width: 45px;
+  background-color: #3490dc;
+  border: 1px solid #3490dc;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 5px 0px;
+  position: absolute;
+  z-index: 1;
+}
+
+.icono-action:hover ~.tooltiptext{
+	visibility: visible;
+}
+
 
 footer{
 	background-color:#58676B;

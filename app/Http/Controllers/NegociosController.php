@@ -40,8 +40,7 @@ class NegociosController extends Controller
 
             $puntos = DB::table('negocios as n')
                 ->select(
-                    DB::raw('SUM(n.puntosCaptados) as puntosCaptados'),
-                    DB::raw('SUM(n.puntosConcertados) as puntosConcertados')
+                    DB::raw('SUM(n.puntos) as puntos'),
                 )
                 ->whereMonth('n.fecha', $numberMonth)
                 ->whereYear('n.fecha', $year)
@@ -88,8 +87,9 @@ class NegociosController extends Controller
      */
     public function store(Request $request)
     {
-       
         $mNegocio = new negocio;
+        $mService = new NegocioService;
+
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
         $mNegocio->telefonoPropietario = $request->telefonoPropietario;
@@ -98,8 +98,13 @@ class NegociosController extends Controller
         $mNegocio->categoria = $request->categoria;
         $mNegocio->valor = $request->valor;
         $mNegocio->fecha = $request->fecha;
-        $mNegocio->puntosConcertados = $request->puntosConcertados;
-        $mNegocio->puntosCaptados = $request->puntosCaptados;
+
+        $isConcerted = $request->boolean('esConcertado') ? true : false;
+        $mService->setPoints($request->categoria);
+        $mService->addConcertedPoints($isConcerted);
+        
+        $mNegocio->esConcertado = $isConcerted;
+        $mNegocio->puntos = $mService->getPoints();
         $mNegocio->save();
 
         return redirect('/negocios/show');
