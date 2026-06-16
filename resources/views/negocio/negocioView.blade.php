@@ -66,7 +66,7 @@
                     <td id="action">
 						<div class="row">
 						    <div class="col-md-3">
-								<a  href="/negocios/edit/1"><i class="icono-action far fa-edit"></i>
+								<a  href="/negocios/edit/{{$negocio->id}}"><i class="icono-action far fa-edit"></i>
 									<span class="tooltiptext">Editar</span>
 								</a>
                             </div>

@@ -14,10 +14,12 @@ Route::get('/negocios', [NegociosController::class, 'index']);
 Route::get('/negocios/show', [NegociosController::class, 'index']);
 Route::get('/negocios/create', [NegociosController::class, 'create']);
 Route::post('/negocios/store', [NegociosController::class, 'store']);
-/* ;
-Route::get('/negocios/show/{id}', [NegociosController::class, 'show']);
 Route::get('/negocios/edit/{id}', [NegociosController::class, 'edit']);
 Route::post('/negocios/update/{id}', [NegociosController::class, 'update']);
+/* ;
+Route::get('/negocios/show/{id}', [NegociosController::class, 'show']);
+
+
 Route::get('/negocios/destroy/{id}', [NegociosController::class, 'destroy']); */
 
 

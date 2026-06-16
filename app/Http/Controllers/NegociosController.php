@@ -124,7 +124,13 @@ class NegociosController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        //echo "edit ".$id;
+        $mNegocio =\App\Models\negocio::where('id',$id)->first();
+
+        //echo json_encode($negocio);
+        $categorias = ["Arriendo", "Anticres", "Venta"];
+        return view('/negocio/negocioEdit',['categorias'=>$categorias, "mNegocio"=>$mNegocio]);
+       
     }
 
     /**
@@ -132,7 +138,27 @@ class NegociosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $mNegocio =\App\Models\negocio::where('id',$id)->first();
+        $mService = new NegocioService;
+
+        $mNegocio->nombreEmpleado = $request->nombreEmpleado;
+        $mNegocio->nombrePropietario = $request->nombrePropietario;
+        $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+        $mNegocio->descripcion = $request->descripcion;
+        $mNegocio->direccion = $request->direccion;
+        $mNegocio->categoria = $request->categoria;
+        $mNegocio->valor = $request->valor;
+        $mNegocio->fecha = $request->fecha;
+
+        $isConcerted = $request->boolean('esConcertado') ? true : false;
+        $mService->setPoints($request->categoria);
+        $mService->addConcertedPoints($isConcerted);
+        
+        $mNegocio->esConcertado = $isConcerted;
+        $mNegocio->puntos = $mService->getPoints();
+        $mNegocio->save();
+
+        return redirect('/negocios/show');
     }
 
     /**
