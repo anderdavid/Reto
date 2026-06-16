@@ -38,6 +38,15 @@ table{
 	font-weight: 400;
 }
 
+.checkboxContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	align-items: center;
+	gap: 15px;
+}
+
+
 footer{
 	background-color:#58676B;
 	padding: 25px 40px;

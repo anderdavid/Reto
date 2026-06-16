@@ -71,15 +71,20 @@
                             <input class="form-control" type="text" name="nombreEmpleado" placeholder="Ingrese nombre del Empleado " required="true">
                         </div>
 
-                        <div class="form-group">
-                            <label for="nombre">Puntos Consertados: </label>
-                            <input class="form-control" type="number" name="puntosConcertados" placeholder="Puntos Concertados" required="true">
-                        </div>
+                        <!-- <div class="form-group">
+                            <label for="nombre">Es concertado: </label>
+                            <input class="form-control" type="radio" name="puntosConcertados" placeholder="Puntos Concertados" required="true">
+                        </div> -->
 
+                        <div class="checkboxContainer">
+                            <label>Es concertado:</label>
+                            <input type="checkbox" value="">
+                        </div>
                         <div class="form-group">
-                            <label for="nombre">Puntos Captados: </label>
+                            <label for="nombre"> </label>
                             <input class="form-control" type="number" name="puntosCaptados" placeholder="Puntos Captados" required="true">
                         </div>
+                        
 
                         <div class="form-group">
                             <input class="btn btn-primary" type="submit" name="Guardar" value="Guardar">
