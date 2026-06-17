@@ -73,8 +73,15 @@ class VisitasController extends Controller
      */
     public function create()
     {
-        $categorias = ["Arriendo", "Anticres", "Venta"];
-        return view('/visitas/visitasCreate',['categorias'=>$categorias]);
+        $categorias = ["Anticres", "Venta"];
+
+        $negocios = DB::table('negocios as n')
+                ->select('n.id','n.nombrePropietario','n.descripcion','n.categoria')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->orderBy('n.nombrePropietario')
+                ->get();
+
+        return view('/visitas/visitasCreate',['categorias'=>$categorias,'negocios'=>$negocios]);
     }
 
     /**
