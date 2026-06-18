@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\visita;
 use Illuminate\Support\Facades\DB;
 use App\Services\NegocioService;
+use App\Services\VisitasService;
 
 class VisitasController extends Controller
 {
@@ -90,6 +91,7 @@ class VisitasController extends Controller
     public function store(Request $request)
     {
         $mVisita = new visita;
+      
      
         $mVisita->nombreEmpleado = $request->nombreEmpleado;
         $mVisita->negocio_id = $request->negocio_id;
@@ -106,8 +108,25 @@ class VisitasController extends Controller
 
         return redirect('/visitas/show'); */
 
-        echo json_encode($mVisita);
-        echo "negocio ".json_encode($negocio);
+        $mService = new VisitasService($negocio->valor, $negocio->categoria);
+        $mService->setComisionPropuesta();
+        $mService->setCalificacion($mVisita->ubicacion, $mVisita->precio, $mVisita->acuerdo);
+        $mService->setComisionEmpleado();
+
+
+        echo "visita ".json_encode($mVisita)."<br>";
+        echo "negocio ".json_encode($negocio)."<br>";
+
+        echo "categoria ".$mService->getCategory()."<br>";
+        echo "valor ".$mService->getValorVenta()."<br>";
+        echo "comsion propuesta ".$mService->getComisionPropuesta()."<br>";
+        echo "calificacion puntos ".$mService->getCalificacionPuntos()."<br>";
+        echo "calificacion ".$mService->getCalificacion()."<br>";
+        echo "comision empleado ".$mService->getComisionEmpleado()."<br>";
+
+          
+
+        
     }
 
     /**

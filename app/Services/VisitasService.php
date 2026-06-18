@@ -18,9 +18,9 @@ class VisitasService{
     public int $comisionPropuesta;
     public int $calificacionPuntos;
     public string $calificacion;
-    public int $comisionEmpleado;
+    public float $comisionEmpleado;
     
-    public function __construct(int $valorVenta, int $category) {
+    public function __construct(int $valorVenta, string $category) {
         $this->valorVenta = $valorVenta;
         $this->category = $category;
     }
@@ -47,11 +47,11 @@ class VisitasService{
     }
 
     public function getComisionEmpleado(){
-        return $comisionEmpleado;
+        return $this->comisionEmpleado;
     }
 
       public function setComisionPropuesta(){
-        $this->comisionPropuesta =  $this->valorVenta * 1.8 / 100;
+        $this->comisionPropuesta =  (($this->valorVenta * 1.8) / 100);
     }
 
    
@@ -60,25 +60,25 @@ class VisitasService{
         $this->calificacionPuntos = $ubicacion + $precio + $acuerdo;
 
         if($this->category == $this->VENTA){
-            if($this->$calificacionPuntos > 80 ){
+            if($this->calificacionPuntos > 80 ){
                 $this->calificacion = $this->EXCLUSIVIDAD_PLUS;
             }
-            if($this->$calificacionPuntos  == 80  ){
+            if($this->calificacionPuntos  == 80  ){
                 $this->calificacion = $this->EXCLUSIVIDAD;
             }
-            if( $this->$calificacionPuntos >= 73 && $calificacionPuntos<80 ){
+            if( $this->calificacionPuntos >= 73 && $calificacionPuntos<80 ){
                 $this->calificacion = $this->INVENTARIO_GENERAL;
             }
-            if( $this->$calificacionPuntos < 73){
+            if( $this->calificacionPuntos < 73){
                 $this->calificacion = $this->INVENTARIO_POR_DEFECTO;
             }
         }
         if($this->category == $this->ANTICRES){
-            if($this->$calificacionPuntos > 80 ){
+            if($this->calificacionPuntos > 80 ){
                 $this->calificacion = $this->EXCLUSIVIDAD_PLUS;
             }
 
-            if($this->$calificacionPuntos < 80 ){
+            if($this->calificacionPuntos < 80 ){
                 $this->calificacion = $this->EXCLUSIVIDAD;
             }
         }
@@ -89,25 +89,25 @@ class VisitasService{
     public function setComisionEmpleado(){
         if($this->category == $this->VENTA){
             if($this->calificacion == $this->EXCLUSIVIDAD_PLUS){
-                return 0.008 * $comisionPropuesta;
+                $this->comisionEmpleado =  0.008 * $this->comisionPropuesta;
             }
             if($this->calificacion == $this->EXCLUSIVIDAD){
-                return 0.006 * $comisionPropuesta;
+                $this->comisionEmpleado =  0.006 * $this->comisionPropuesta;
             }
               if($this->calificacion == $this->INVENTARIO_GENERAL){
-                return 0.003 * $comisionPropuesta;
+                $this->comisionEmpleado =  0.003 * $this->comisionPropuesta;
             }
               if($this->calificacion == $this->INVENTARIO_POR_DEFECTO){
-                return 0.002 * $comisionPropuesta;
+                $this->comisionEmpleado =  0.002 * $this->comisionPropuesta;
             }
         }
 
         if($this->category == $this->ANTICRES){
             if($this->calificacion == $this->EXCLUSIVIDAD_PLUS){
-                return 0.06* $comisionPropuesta;
+                $this->comisionEmpleado =  0.06* $this->comisionPropuesta;
             }
             if($this->calificacion ==  $this->EXCLUSIVIDAD){
-                return 0.04* $comisionPropuesta;
+                $this->comisionEmpleado =  0.04* $this->comisionPropuesta;
             }
         }
        
