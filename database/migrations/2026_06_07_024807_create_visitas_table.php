@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('visitas', function (Blueprint $table) {
             $table->id();
             $table->string('nombreEmpleado');
-            $table->string('categoria');
-            $table->integer("valor");
             $table->date('fecha');
 
             $table->integer('ubicacion');

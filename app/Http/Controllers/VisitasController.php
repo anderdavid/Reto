@@ -92,19 +92,22 @@ class VisitasController extends Controller
         $mVisita = new visita;
      
         $mVisita->nombreEmpleado = $request->nombreEmpleado;
-        $mVisita->nombrePropietario=$request->nombrePropietario;
-        $mVisita->telefonoPropietario=$request->telefonoPropietario;
-        $mVisita->descripcion=$request->descripcion;
-        $mVisita->direccion=$request->direccion;
-        $mVisita->categoria=$request->categoria;
-        $mVisita->valor=$request->valor;
-        $mVisita->evaluacion=$request->evaluacion;
-        $mVisita->fecha=$request->fecha;
-        $mVisita->calificacion=$request->calificacion;
-        $mVisita->comision=$request->comision;
-        $mVisita->save(); 
+        $mVisita->negocio_id = $request->negocio_id;
+        $mVisita->fecha = $request->fecha;
+        $mVisita->ubicacion=$request->ubicacion;
+        $mVisita->precio=$request->precio;
+        $mVisita->acuerdo=$request->acuerdo;
 
-        return redirect('/visitas/show');
+        $negocio = DB::table('negocios as n')
+                ->select('n.categoria', 'n.valor')
+                ->where('n.id',$mVisita->negocio_id)
+                ->first();
+       /*  $mVisita->save(); 
+
+        return redirect('/visitas/show'); */
+
+        echo json_encode($mVisita);
+        echo "negocio ".json_encode($negocio);
     }
 
     /**

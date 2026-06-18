@@ -13,7 +13,7 @@
 
             $('#negocio').select2({
                 placeholder: 'Buscar negocio',
-                minimumInputLength: 1
+                /*minimumInputLength: 1*/
             });
         });
     </script>
@@ -50,36 +50,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="nombre">Nombre Propietario: </label>
-                            <input class="form-control" type="text" name="nombrePropietario" placeholder="Ingrese nombre del propietario" required="true">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombre">Telefono: </label>
-                            <input class="form-control" type="text" name="telefonoPropietario" placeholder="Telefono" required="true">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombre">Descripcion: </label>
-                            <input class="form-control" type="text" name="descripcion" placeholder="Descripcion" required="true">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nombre">Direccion: </label>
-                            <input class="form-control" type="text" name="direccion" placeholder="Direccion" required="true">
-                        </div> -->
-                        <!-- <div class="form-group">
-                            <label for="nombre">Categoria:</label>
-                            <select class="form-control" id="sel1" name="categoria">
-                                @foreach ($categorias as $categoria)
-                                <option value="{{$categoria}}">{{$categoria}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombre">Valor: </label>
-                            <input class="form-control" type="number" name="valor" placeholder="Ingrese valor" required="true">
-                        </div>
-                        <div class="form-group">
+                  
+                       <div class="form-group">
                             <label for="sel1">Fecha de Visita:</label>
                             <input id="datepicker1" width="276" name="fecha" value="2026-06-10" />
                             <script>
@@ -92,19 +64,18 @@
                             </script>
                         </div>
                         <div class="form-group">
-                            <label for="nombre">Comision: </label>
-                            <input class="form-control" type="number" name="comision" placeholder="Ingrese comision" required="true">
-                        </div>
-                         <div class="form-group">
-                            <label for="nombre">Calificacion: </label>
-                            <input class="form-control" type="text" name="calificacion" placeholder="Ingrese calificacion" required="true">
+                            <label for="nombre">Ubicacion: (%) </label>
+                            <input class="form-control" type="number" name="ubicacion" placeholder="Califique de 0 a 100" required="true">
                         </div>
                         <div class="form-group">
-                            <label for="nombre">Evaluacion: </label>
-                            <input class="form-control" type="number" step= "0.01" name="evaluacion" placeholder="Ingrese evaluacion" required="true">
-                        </div> -->
-                       
-
+                            <label for="nombre">Precio:  (%)</label>
+                            <input class="form-control" type="number" name="precio" placeholder="Califique de 0 a 100" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Acuerdo:  (%)</label>
+                            <input class="form-control" type="number" name="acuerdo" placeholder="Califique de 0 a 100" required="true">
+                        </div>
+                        
                         <div class="form-group">
                             <input class="btn btn-primary" type="submit" name="Guardar" value="Guardar">
                         </div>
