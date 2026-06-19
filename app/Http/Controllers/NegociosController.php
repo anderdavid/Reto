@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use \App\Models\negocio;
 use Illuminate\Support\Facades\DB;
 use App\Services\NegocioService;
+use App\Services\VisitasService;
 
 class NegociosController extends Controller
 {
@@ -140,6 +141,7 @@ class NegociosController extends Controller
     {
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
         $mService = new NegocioService;
+       
 
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
@@ -157,6 +159,32 @@ class NegociosController extends Controller
         $mNegocio->esConcertado = $isConcerted;
         $mNegocio->puntos = $mService->getPoints();
         $mNegocio->save();
+
+
+        $mVisitas = \App\Models\visita::from('visitas as v')
+            ->select('v.*', 'n.categoria', 'n.valor')
+            ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+            ->whereIn('n.categoria', ['Venta', 'Anticres'])
+            ->where('v.negocio_id', $mNegocio->id)
+            ->get();
+
+        foreach($mVisitas as $mVisita){
+            $mVisitaServices = new VisitasService($mNegocio->valor, $mNegocio->categoria);
+            $mVisitaServices->setComisionPropuesta();
+            $mVisitaServices->setCalificacion($mVisita->ubicacion, $mVisita->precio, $mVisita->acuerdo);
+            $mVisitaServices->setComisionEmpleado();
+
+            $mVisita->comisionPropuesta =  $mVisitaServices->getComisionPropuesta();
+            $mVisita->comisionEmpleado =  $mVisitaServices->getComisionEmpleado();
+            $mVisita->calificacionPuntos =  $mVisitaServices->getCalificacionPuntos();
+            $mVisita->calificacion =  $mVisitaServices->getCalificacion();
+
+
+         /*    echo "visita".json_encode($mVisita)."<br>"; */
+
+            $mVisita->save();
+        }
+
 
         return redirect('/negocios/show');
     }

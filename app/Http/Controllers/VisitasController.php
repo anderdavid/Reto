@@ -32,6 +32,7 @@ class VisitasController extends Controller
            $visitas = DB::table('visitas as v')
                 ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
                 ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->whereIn("n.categoria",["Venta","Anticres"])
                 ->whereMonth('v.fecha', $numberMonth)
                 ->whereYear('v.fecha', $year)
                 ->where('v.nombreEmpleado', $nombreEmpleado)
@@ -43,6 +44,7 @@ class VisitasController extends Controller
                     DB::raw('SUM(v.comisionEmpleado) as comision'),
                 )
                 ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->whereIn("n.categoria",["Venta","Anticres"])
                 ->whereMonth('v.fecha', $numberMonth)
                 ->whereYear('v.fecha', $year)
                 ->where('v.nombreEmpleado', $nombreEmpleado)
@@ -51,18 +53,15 @@ class VisitasController extends Controller
 
         }else{
             $visitas = DB::table('visitas as v')
-                 ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
+                ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
+                ->whereIn("n.categoria",["Venta","Anticres"])
                 ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->orderBy('v.fecha')
                 ->paginate(9);
 
         }
 
-        /* return view('visitas/visitasView',compact('visitas')); */
-
-       /*  echo "visitas: ".json_encode($visitas); */
-
-       /*   */
+      
         return view('visitas/visitasView',compact('visitas'), 
             [
                 'currentMonth'=>$month, 
