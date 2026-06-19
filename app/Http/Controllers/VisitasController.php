@@ -30,7 +30,7 @@ class VisitasController extends Controller
 
         if(isset($year) && isset($month) && isset($nombreEmpleado)){
            $visitas = DB::table('visitas as v')
-                ->select('v.*','n.*')
+                ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
                 ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->whereMonth('v.fecha', $numberMonth)
                 ->whereYear('v.fecha', $year)
@@ -40,7 +40,7 @@ class VisitasController extends Controller
 
             $comisionTotal = DB::table('visitas as v')
                 ->select(
-                    DB::raw('SUM(v.comision) as comision'),
+                    DB::raw('SUM(v.comisionEmpleado) as comision'),
                 )
                 ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->whereMonth('v.fecha', $numberMonth)
@@ -58,12 +58,12 @@ class VisitasController extends Controller
 
         }
 
-        return view('visitas/visitasView',compact('visitas'));
+        /* return view('visitas/visitasView',compact('visitas')); */
 
        /*  echo "visitas: ".json_encode($visitas); */
 
        /*   */
-       /*  return view('visitas/visitasView',compact('visitas'), 
+        return view('visitas/visitasView',compact('visitas'), 
             [
                 'currentMonth'=>$month, 
                 'currentYear'=>$year,
@@ -73,7 +73,7 @@ class VisitasController extends Controller
                 'numberMonth'=> $numberMonth,
                 'comision'=> $comisionTotal
             ]
-        ); */
+        );
     }
 
     /**
