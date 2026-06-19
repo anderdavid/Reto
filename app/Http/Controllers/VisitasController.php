@@ -30,7 +30,8 @@ class VisitasController extends Controller
 
         if(isset($year) && isset($month) && isset($nombreEmpleado)){
            $visitas = DB::table('visitas as v')
-                ->select('v.*')
+                ->select('v.*','n.*')
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->whereMonth('v.fecha', $numberMonth)
                 ->whereYear('v.fecha', $year)
                 ->where('v.nombreEmpleado', $nombreEmpleado)
@@ -41,6 +42,7 @@ class VisitasController extends Controller
                 ->select(
                     DB::raw('SUM(v.comision) as comision'),
                 )
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->whereMonth('v.fecha', $numberMonth)
                 ->whereYear('v.fecha', $year)
                 ->where('v.nombreEmpleado', $nombreEmpleado)
@@ -49,12 +51,19 @@ class VisitasController extends Controller
 
         }else{
             $visitas = DB::table('visitas as v')
-                ->select('v.*')
+                 ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
                 ->orderBy('v.fecha')
                 ->paginate(9);
 
         }
-        return view('visitas/visitasView',compact('visitas'), 
+
+        return view('visitas/visitasView',compact('visitas'));
+
+       /*  echo "visitas: ".json_encode($visitas); */
+
+       /*   */
+       /*  return view('visitas/visitasView',compact('visitas'), 
             [
                 'currentMonth'=>$month, 
                 'currentYear'=>$year,
@@ -63,10 +72,8 @@ class VisitasController extends Controller
                 'nombreEmpleado'=> $nombreEmpleado,
                 'numberMonth'=> $numberMonth,
                 'comision'=> $comisionTotal
-               /*  'puntos' =>$puntos, */
-               /*  'valorPunto'=>$valorPunto */
             ]
-        );
+        ); */
     }
 
     /**
@@ -104,17 +111,26 @@ class VisitasController extends Controller
                 ->select('n.categoria', 'n.valor')
                 ->where('n.id',$mVisita->negocio_id)
                 ->first();
-       /*  $mVisita->save(); 
-
-        return redirect('/visitas/show'); */
+     
+      
 
         $mService = new VisitasService($negocio->valor, $negocio->categoria);
         $mService->setComisionPropuesta();
         $mService->setCalificacion($mVisita->ubicacion, $mVisita->precio, $mVisita->acuerdo);
         $mService->setComisionEmpleado();
 
+        $mVisita->comisionPropuesta = $mService->getComisionPropuesta();
+        $mVisita->comisionEmpleado = $mService->getComisionEmpleado();
+        $mVisita->calificacionPuntos = $mService->getCalificacionPuntos();
+        $mVisita->calificacion = $mService->getCalificacion();
 
-        echo "visita ".json_encode($mVisita)."<br>";
+        $mVisita->save();
+
+        return redirect('/visitas/show'); 
+
+
+
+     /*    echo "visita ".json_encode($mVisita)."<br>";
         echo "negocio ".json_encode($negocio)."<br>";
 
         echo "categoria ".$mService->getCategory()."<br>";
@@ -122,11 +138,8 @@ class VisitasController extends Controller
         echo "comsion propuesta ".$mService->getComisionPropuesta()."<br>";
         echo "calificacion puntos ".$mService->getCalificacionPuntos()."<br>";
         echo "calificacion ".$mService->getCalificacion()."<br>";
-        echo "comision empleado ".$mService->getComisionEmpleado()."<br>";
+        echo "comision empleado ".$mService->getComisionEmpleado()."<br>"; */
 
-          
-
-        
     }
 
     /**
@@ -142,7 +155,19 @@ class VisitasController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $mVisita =\App\Models\visita::where('id',$id)->first();
+
+        $categorias = ["Anticres", "Venta"];
+
+        $negocios = DB::table('negocios as n')
+                ->select('n.id','n.nombrePropietario','n.descripcion','n.categoria')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->orderBy('n.nombrePropietario')
+                ->get();
+
+       /*  echo "visita: ".json_encode($mVisita); */
+
+        return view('/visitas/visitasEdit',["visita"=>$mVisita, 'categorias'=>$categorias,'negocios'=>$negocios]);
     }
 
     /**
@@ -150,7 +175,35 @@ class VisitasController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $mVisita =\App\Models\visita::where('id',$id)->first();
+      
+        $mVisita->nombreEmpleado = $request->nombreEmpleado;
+        $mVisita->negocio_id = $request->negocio_id;
+        $mVisita->fecha = $request->fecha;
+        $mVisita->ubicacion=$request->ubicacion;
+        $mVisita->precio=$request->precio;
+        $mVisita->acuerdo=$request->acuerdo;
+
+        $negocio = DB::table('negocios as n')
+                ->select('n.categoria', 'n.valor')
+                ->where('n.id',$mVisita->negocio_id)
+                ->first();
+     
+      
+
+        $mService = new VisitasService($negocio->valor, $negocio->categoria);
+        $mService->setComisionPropuesta();
+        $mService->setCalificacion($mVisita->ubicacion, $mVisita->precio, $mVisita->acuerdo);
+        $mService->setComisionEmpleado();
+
+        $mVisita->comisionPropuesta = $mService->getComisionPropuesta();
+        $mVisita->comisionEmpleado = $mService->getComisionEmpleado();
+        $mVisita->calificacionPuntos = $mService->getCalificacionPuntos();
+        $mVisita->calificacion = $mService->getCalificacion();
+
+        $mVisita->save();
+
+        return redirect('/visitas/show'); 
     }
 
     /**

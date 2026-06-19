@@ -22,7 +22,8 @@ return new class extends Migration
             $table->integer('calificacionPuntos');
             $table->string('calificacion');
 
-            $table->integer('comision');
+            $table->integer('comisionPropuesta');
+            $table->integer('comisionEmpleado');
          
 
             $table->foreignId('negocio_id')
