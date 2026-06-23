@@ -194,6 +194,7 @@ class NegociosController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        \App\Models\negocio::where('id',$id)->delete();
+        return redirect('/negocios/show');
     }
 }

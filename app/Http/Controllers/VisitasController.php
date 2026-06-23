@@ -210,6 +210,7 @@ class VisitasController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        \App\Models\visita::where('id',$id)->delete();
+        return redirect('/visitas/show');
     }
 }

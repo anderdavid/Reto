@@ -7,6 +7,18 @@
 @section('content')
 
 <div class= "viewContainer">
+     <script type="text/javascript">
+
+        var idNegocio="";
+
+        function eliminar(id){
+			idNegocio =id;
+		}
+
+		function borrar(){
+			location.href = "/negocios/destroy/"+idNegocio;
+		}
+    </script>
     <div>
         <form method="GET">
             {{ csrf_field() }}
@@ -70,6 +82,12 @@
 									<span class="tooltiptext">Editar</span>
 								</a>
                             </div>
+                            <div class="col-md-3">
+                                <a onclick="eliminar({{$negocio->id}})" data-toggle="modal" data-target="#modalErase">
+                                    <i class="icono-action fas fa-trash-alt" style = "color: #007bff; cursor:pointer;"></i>
+                                    <span class="tooltiptext">Borrar</span>
+                                </a>
+						    </div>
                         </div>
                     </td>
                 </tr>
@@ -79,6 +97,33 @@
     <div class="mt-3">
        {{ $negocios->appends(request()->query())->links() }}
     </div>
+
+    <div class="modal" id="modalErase">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header bg-danger" style= "background-color: #45627f !important">
+					<h4 class="modal-title text-light">Advertencia!</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					¿Está seguro de eliminar este negocio?
+				</div>
+				<div class="modal-footer">
+					<div class="row" style="margin-right: 10px">
+						<div class="col-md-2"></div>
+						<div class="col-md-4">
+							<button onClick="borrar()" class="btn btn-primary">Aceptar</button>
+						</div>
+                        
+						<div class="col-md-4">
+							<button class="btn btn-danger" style= "margin-left:4px;" data-dismiss="modal">Cerrar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
    
 
     @isset($puntos)
