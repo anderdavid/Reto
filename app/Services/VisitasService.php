@@ -50,7 +50,7 @@ class VisitasService{
         return $this->comisionEmpleado;
     }
 
-      public function setComisionPropuesta(){
+    public function setComisionPropuesta(){
         $this->comisionPropuesta =  (($this->valorVenta * 1.8) / 100);
     }
 
@@ -78,8 +78,11 @@ class VisitasService{
                 $this->calificacion = $this->EXCLUSIVIDAD_PLUS;
             }
 
-            if($this->calificacionPuntos < 80 ){
+            if($this->calificacionPuntos >=50 && $this->calificacionPuntos<80 ){
                 $this->calificacion = $this->EXCLUSIVIDAD;
+            }
+            if($this->calificacionPuntos <50 ){
+                $this->calificacion = $this->INVENTARIO_POR_DEFECTO;
             }
         }
 
@@ -108,6 +111,9 @@ class VisitasService{
             }
             if($this->calificacion ==  $this->EXCLUSIVIDAD){
                 $this->comisionEmpleado =  0.04* $this->comisionPropuesta;
+            }
+            if($this->calificacion ==  $this->INVENTARIO_POR_DEFECTO){
+                $this->comisionEmpleado =  0.01* $this->comisionPropuesta;
             }
         }
        
