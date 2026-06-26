@@ -13,6 +13,9 @@ class NegociosController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private $categorias = ["Arriendo", "Anticres", "Venta"];
+
     public function index(Request $request)
     {
         $mService = new NegocioService;
@@ -79,8 +82,8 @@ class NegociosController extends Controller
      */
     public function create()
     {
-        $categorias = ["Arriendo", "Anticres", "Venta"];
-        return view('/negocio/negocioCreate',['categorias'=>$categorias]);
+       /*  $categorias = ["Arriendo", "Anticres", "Venta"]; */
+        return view('/negocio/negocioCreate',['categorias'=>$this->categorias]);
     }
 
     /**
@@ -94,6 +97,15 @@ class NegociosController extends Controller
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
         $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+
+        
+        $existNegocio= $mNegocio->where('telefonoPropietario', $request->telefonoPropietario)->first();
+        echo "existNegocio ".json_encode($existNegocio);
+
+        if(isset($existNegocio)){
+            return view('/negocio/negocioCreate',['errorPhone'=>"telefono ya existe",'categorias'=>$this->categorias]);
+        }
+
         $mNegocio->descripcion = $request->descripcion;
         $mNegocio->direccion = $request->direccion;
         $mNegocio->categoria = $request->categoria;
@@ -106,7 +118,7 @@ class NegociosController extends Controller
         
         $mNegocio->esConcertado = $isConcerted;
         $mNegocio->puntos = $mService->getPoints();
-        $mNegocio->save();
+        $mNegocio->save(); 
 
         return redirect('/negocios/show');
     
@@ -129,7 +141,7 @@ class NegociosController extends Controller
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
 
         //echo json_encode($negocio);
-        $categorias = ["Arriendo", "Anticres", "Venta"];
+        
         return view('/negocio/negocioEdit',['categorias'=>$categorias, "mNegocio"=>$mNegocio]);
        
     }
