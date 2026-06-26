@@ -82,7 +82,6 @@ class NegociosController extends Controller
      */
     public function create()
     {
-       /*  $categorias = ["Arriendo", "Anticres", "Venta"]; */
         return view('/negocio/negocioCreate',['categorias'=>$this->categorias]);
     }
 
@@ -100,8 +99,7 @@ class NegociosController extends Controller
 
         
         $existNegocio= $mNegocio->where('telefonoPropietario', $request->telefonoPropietario)->first();
-        echo "existNegocio ".json_encode($existNegocio);
-
+        
         if(isset($existNegocio)){
             return view('/negocio/negocioCreate',['errorPhone'=>"telefono ya existe",'categorias'=>$this->categorias]);
         }
@@ -140,9 +138,9 @@ class NegociosController extends Controller
         //echo "edit ".$id;
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
 
-        //echo json_encode($negocio);
+        //echo json_encode($mNegocio);
         
-        return view('/negocio/negocioEdit',['categorias'=>$categorias, "mNegocio"=>$mNegocio]);
+        return view('/negocio/negocioEdit',['categorias'=>$this->categorias, "mNegocio"=>$mNegocio]);
        
     }
 
@@ -153,11 +151,21 @@ class NegociosController extends Controller
     {
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
         $mService = new NegocioService;
+        $gNegocio = new negocio;
        
 
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
         $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+
+        $existNegocio= $gNegocio->where('telefonoPropietario', $request->telefonoPropietario)->first();
+        //echo "exist negocio ".json_encode($existNegocio);
+
+        
+        if(isset($existNegocio) && $existNegocio->id != $mNegocio->id){
+            return view('/negocio/negocioEdit',['errorPhone'=>"telefono ya existe",'categorias'=>$this->categorias,'mNegocio'=>$mNegocio]);
+        }
+
         $mNegocio->descripcion = $request->descripcion;
         $mNegocio->direccion = $request->direccion;
         $mNegocio->categoria = $request->categoria;
