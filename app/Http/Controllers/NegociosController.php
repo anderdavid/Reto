@@ -13,11 +13,15 @@ class NegociosController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private $categorias = ["Arriendo", "Anticres", "Venta"];
+    private  $valorPunto = 2500;
+
     public function index(Request $request)
     {
         $mService = new NegocioService;
 
-        $valorPunto = 2500;
+       
         $puntos = null;
         
         $year = $request->get('year');
@@ -56,8 +60,6 @@ class NegociosController extends Controller
                 ->paginate(9);
 
         }
-    
-       
         return view('/negocio/negocioView',compact('negocios'), 
                 [
                     'currentMonth'=>$month, 
@@ -67,7 +69,7 @@ class NegociosController extends Controller
                     'nombreEmpleado'=> $nombreEmpleado,
                     'numberMonth'=> $numberMonth,
                     'puntos' =>$puntos,
-                    'valorPunto'=>$valorPunto
+                    'valorPunto'=>$this->valorPunto
                 ]
             ); 
 
@@ -79,8 +81,7 @@ class NegociosController extends Controller
      */
     public function create()
     {
-        $categorias = ["Arriendo", "Anticres", "Venta"];
-        return view('/negocio/negocioCreate',['categorias'=>$categorias]);
+        return view('/negocio/negocioCreate',['categorias'=>$this->categorias]);
     }
 
     /**
@@ -94,6 +95,14 @@ class NegociosController extends Controller
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
         $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+
+        
+        $existNegocio= $mNegocio->where('telefonoPropietario', $request->telefonoPropietario)->first();
+        
+        if(isset($existNegocio)){
+            return view('/negocio/negocioCreate',['errorPhone'=>"telefono ya existe",'categorias'=>$this->categorias]);
+        }
+
         $mNegocio->descripcion = $request->descripcion;
         $mNegocio->direccion = $request->direccion;
         $mNegocio->categoria = $request->categoria;
@@ -106,10 +115,104 @@ class NegociosController extends Controller
         
         $mNegocio->esConcertado = $isConcerted;
         $mNegocio->puntos = $mService->getPoints();
-        $mNegocio->save();
+        $mNegocio->save(); 
 
         return redirect('/negocios/show');
     
+    }
+
+    public function export(Request $request){
+
+       
+     
+        $mService = new NegocioService;
+
+        $year = $request->get('year');
+        $month = $request->get('month');
+        $nombreEmpleado = $request->get('nombreEmpleado');
+
+        $numberMonth = $mService->castMonth($month);
+
+        if(isset($year) && isset($month) && isset($nombreEmpleado)){
+           $negocios = DB::table('negocios as n')
+                ->select('n.*')
+                ->whereMonth('n.fecha', $numberMonth)
+                ->whereYear('n.fecha', $year)
+                ->where('n.nombreEmpleado', $nombreEmpleado)
+                ->orderBy('n.fecha')
+                ->get();
+
+            $puntos = DB::table('negocios as n')
+                ->select(
+                    DB::raw('SUM(n.puntos) as puntos'),
+                )
+                ->whereMonth('n.fecha', $numberMonth)
+                ->whereYear('n.fecha', $year)
+                ->where('n.nombreEmpleado', $nombreEmpleado)
+                ->groupBy('n.nombreEmpleado')
+                ->first();
+            
+            
+        }else{
+            $negocios = DB::table('negocios as n')
+                ->select('n.*')
+                ->orderBy('n.fecha')
+                ->get();
+
+            $puntos = DB::table('negocios as n')
+                ->select(
+                    DB::raw('SUM(n.puntos) as puntos'),
+                )
+                ->first();
+
+        }
+
+       
+
+       
+        // echo "negocios ".json_encode($negocios); 
+        // echo "puntos ".$puntos->puntos;
+
+        return response()->streamDownload(function () use ($negocios,$puntos) {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Empleado', 
+                'Propietario',
+                'Telefono',
+                'Descripcion',
+                'Direccion',
+                'Categoria',
+                'valor',
+                'fecha',
+                'Es concertado',
+                'puntos'
+
+            ]);
+
+            foreach ($negocios as $negocio) {
+                fputcsv($file, [
+                    $negocio->nombreEmpleado,
+                    $negocio->nombrePropietario,
+                    $negocio->telefonoPropietario,
+                    $negocio->descripcion,
+                    $negocio->direccion,
+                    $negocio->categoria,
+                    $negocio->valor,
+                    $negocio->fecha,
+                    $negocio->esConcertado?"Si":"No",
+                    $negocio->puntos
+                ]);
+            }
+            fputcsv($file,[]); 
+            fputcsv($file,[]); 
+            fputcsv($file,['puntos',$puntos->puntos]);
+            fputcsv($file,['Total a pagar ',$puntos->puntos * $this->valorPunto]);  
+
+
+            fclose($file);
+        }, 'negocios.csv'); 
+
     }
 
     /**
@@ -128,9 +231,9 @@ class NegociosController extends Controller
         //echo "edit ".$id;
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
 
-        //echo json_encode($negocio);
-        $categorias = ["Arriendo", "Anticres", "Venta"];
-        return view('/negocio/negocioEdit',['categorias'=>$categorias, "mNegocio"=>$mNegocio]);
+        //echo json_encode($mNegocio);
+        
+        return view('/negocio/negocioEdit',['categorias'=>$this->categorias, "mNegocio"=>$mNegocio]);
        
     }
 
@@ -141,11 +244,21 @@ class NegociosController extends Controller
     {
         $mNegocio =\App\Models\negocio::where('id',$id)->first();
         $mService = new NegocioService;
+        $gNegocio = new negocio;
        
 
         $mNegocio->nombreEmpleado = $request->nombreEmpleado;
         $mNegocio->nombrePropietario = $request->nombrePropietario;
         $mNegocio->telefonoPropietario = $request->telefonoPropietario;
+
+        $existNegocio= $gNegocio->where('telefonoPropietario', $request->telefonoPropietario)->first();
+        //echo "exist negocio ".json_encode($existNegocio);
+
+        
+        if(isset($existNegocio) && $existNegocio->id != $mNegocio->id){
+            return view('/negocio/negocioEdit',['errorPhone'=>"telefono ya existe",'categorias'=>$this->categorias,'mNegocio'=>$mNegocio]);
+        }
+
         $mNegocio->descripcion = $request->descripcion;
         $mNegocio->direccion = $request->direccion;
         $mNegocio->categoria = $request->categoria;

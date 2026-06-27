@@ -34,6 +34,9 @@
                         <div class="form-group">
                             <label for="nombre">Telefono: </label>
                             <input class="form-control" type="text" name="telefonoPropietario" placeholder="Telefono propietario" required="true">
+                            @isset($errorPhone)
+                            <span style="color:red">{{$errorPhone}}</span>
+                            @endisset
                         </div>
 
 
@@ -49,7 +52,7 @@
 
                         <div class="form-group">
                             <label for="nombre">Valor: </label>
-                            <input class="form-control" type="text" name="valor" placeholder="Ingrese valor" required="true">
+                            <input class="form-control" type="number" name="valor" placeholder="Ingrese valor" required="true">
                         </div>
 
 
