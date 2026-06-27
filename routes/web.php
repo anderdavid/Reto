@@ -17,6 +17,7 @@ Route::post('/negocios/store', [NegociosController::class, 'store']);
 Route::get('/negocios/edit/{id}', [NegociosController::class, 'edit']);
 Route::post('/negocios/update/{id}', [NegociosController::class, 'update']);
 Route::get('/negocios/destroy/{id}', [NegociosController::class, 'destroy']);
+Route::get('/negocios/exportar', [NegociosController::class, 'export']);
 /* ;
 Route::get('/negocios/show/{id}', [NegociosController::class, 'show']);
 

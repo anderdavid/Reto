@@ -15,12 +15,13 @@ class NegociosController extends Controller
      */
 
     private $categorias = ["Arriendo", "Anticres", "Venta"];
+    private  $valorPunto = 2500;
 
     public function index(Request $request)
     {
         $mService = new NegocioService;
 
-        $valorPunto = 2500;
+       
         $puntos = null;
         
         $year = $request->get('year');
@@ -59,8 +60,6 @@ class NegociosController extends Controller
                 ->paginate(9);
 
         }
-    
-       
         return view('/negocio/negocioView',compact('negocios'), 
                 [
                     'currentMonth'=>$month, 
@@ -70,7 +69,7 @@ class NegociosController extends Controller
                     'nombreEmpleado'=> $nombreEmpleado,
                     'numberMonth'=> $numberMonth,
                     'puntos' =>$puntos,
-                    'valorPunto'=>$valorPunto
+                    'valorPunto'=>$this->valorPunto
                 ]
             ); 
 
@@ -120,6 +119,100 @@ class NegociosController extends Controller
 
         return redirect('/negocios/show');
     
+    }
+
+    public function export(Request $request){
+
+       
+     
+        $mService = new NegocioService;
+
+        $year = $request->get('year');
+        $month = $request->get('month');
+        $nombreEmpleado = $request->get('nombreEmpleado');
+
+        $numberMonth = $mService->castMonth($month);
+
+        if(isset($year) && isset($month) && isset($nombreEmpleado)){
+           $negocios = DB::table('negocios as n')
+                ->select('n.*')
+                ->whereMonth('n.fecha', $numberMonth)
+                ->whereYear('n.fecha', $year)
+                ->where('n.nombreEmpleado', $nombreEmpleado)
+                ->orderBy('n.fecha')
+                ->get();
+
+            $puntos = DB::table('negocios as n')
+                ->select(
+                    DB::raw('SUM(n.puntos) as puntos'),
+                )
+                ->whereMonth('n.fecha', $numberMonth)
+                ->whereYear('n.fecha', $year)
+                ->where('n.nombreEmpleado', $nombreEmpleado)
+                ->groupBy('n.nombreEmpleado')
+                ->first();
+            
+            
+        }else{
+            $negocios = DB::table('negocios as n')
+                ->select('n.*')
+                ->orderBy('n.fecha')
+                ->get();
+
+            $puntos = DB::table('negocios as n')
+                ->select(
+                    DB::raw('SUM(n.puntos) as puntos'),
+                )
+                ->first();
+
+        }
+
+       
+
+       
+        // echo "negocios ".json_encode($negocios); 
+        // echo "puntos ".$puntos->puntos;
+
+        return response()->streamDownload(function () use ($negocios,$puntos) {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Empleado', 
+                'Propietario',
+                'Telefono',
+                'Descripcion',
+                'Direccion',
+                'Categoria',
+                'valor',
+                'fecha',
+                'Es concertado',
+                'puntos'
+
+            ]);
+
+            foreach ($negocios as $negocio) {
+                fputcsv($file, [
+                    $negocio->nombreEmpleado,
+                    $negocio->nombrePropietario,
+                    $negocio->telefonoPropietario,
+                    $negocio->descripcion,
+                    $negocio->direccion,
+                    $negocio->categoria,
+                    $negocio->valor,
+                    $negocio->fecha,
+                    $negocio->esConcertado?"Si":"No",
+                    $negocio->puntos
+                ]);
+            }
+            fputcsv($file,[]); 
+            fputcsv($file,[]); 
+            fputcsv($file,['puntos',$puntos->puntos]);
+            fputcsv($file,['Total a pagar ',$puntos->puntos * $this->valorPunto]);  
+
+
+            fclose($file);
+        }, 'negocios.csv'); 
+
     }
 
     /**
