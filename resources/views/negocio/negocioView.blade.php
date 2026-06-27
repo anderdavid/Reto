@@ -24,7 +24,7 @@
             month = month ?? '';
             nombreEmpleado = nombreEmpleado ?? '';
             
-            location.href =  `/negocios/exportar?year=${year}+&month=${month}&nombreEmpleado=${nombreEmpleado}`
+            location.href =  `/negocios/exportar?year=${year}&month=${month}&nombreEmpleado=${nombreEmpleado}`
         }
     </script>
     <div>

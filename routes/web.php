@@ -32,6 +32,7 @@ Route::post('/visitas/store', [VisitasController::class, 'store']);
 Route::get('/visitas/edit/{id}', [VisitasController::class, 'edit']);
 Route::post('/visitas/update/{id}', [VisitasController::class, 'update']); 
 Route::get('/visitas/destroy/{id}', [VisitasController::class, 'destroy']);
+Route::get('/visitas/exportar', [VisitasController::class, 'export']);
 
 
 /* 
