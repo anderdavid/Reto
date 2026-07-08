@@ -1,0 +1,32 @@
+version: "3.8"
+name: reto
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: db_reto
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: reto
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data_local:/var/lib/mysql
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reto_cont
+    image: php82-apache
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+
+volumes:
+  db_data_local:
