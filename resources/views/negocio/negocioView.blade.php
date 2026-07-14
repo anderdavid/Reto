@@ -18,6 +18,14 @@
 		function borrar(){
 			location.href = "/negocios/destroy/"+idNegocio;
 		}
+
+        function exportar(year = '',month='',nombreEmpleado= ''){
+            year = year ?? '';
+            month = month ?? '';
+            nombreEmpleado = nombreEmpleado ?? '';
+            
+            location.href =  `/negocios/exportar?year=${year}&month=${month}&nombreEmpleado=${nombreEmpleado}`
+        }
     </script>
     <div>
         <form method="GET">
@@ -44,6 +52,17 @@
             </div>
             
         </form>
+    </div>
+
+    <div class="col-md-4">
+        <button 
+            class="btn btn-secondary" 
+            style= "margin-left:4px; background: #238945; color:#fff;" 
+            data-dismiss="modal"
+            onclick='exportar(@json($currentYear),@json($currentMonth),@json($nombreEmpleado))'
+            >
+            Exportar
+        </button>
     </div>
 
     <table class="table table-borderless table-responsive-md mt-3">
@@ -78,9 +97,21 @@
                     <td id="action">
 						<div class="row">
 						    <div class="col-md-3">
+
+                               @if(now()->month <= \Carbon\Carbon::parse($negocio->fecha)->month)
+  
 								<a  href="/negocios/edit/{{$negocio->id}}"><i class="icono-action far fa-edit"></i>
 									<span class="tooltiptext">Editar</span>
 								</a>
+
+                                @else
+                                <a href="#">
+                                    <i class="icono-action fas fa-lock"></i>
+                                </a>
+
+                                
+                                @endif
+                               
                             </div>
                             <div class="col-md-3">
                                 <a onclick="eliminar({{$negocio->id}})" data-toggle="modal" data-target="#modalErase">

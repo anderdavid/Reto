@@ -18,6 +18,14 @@
 		function borrar(){
 			location.href = "/visitas/destroy/"+idVisita;
 		}
+
+        function exportar(year = '',month='',nombreEmpleado= ''){
+            year = year ?? '';
+            month = month ?? '';
+            nombreEmpleado = nombreEmpleado ?? '';
+            
+            location.href =  `/visitas/exportar?year=${year}&month=${month}&nombreEmpleado=${nombreEmpleado}`
+        }
     </script>
    <div>
      <form method="GET">
@@ -43,6 +51,17 @@
                 <input type="submit" value="Calcular" class ="btn btn-primary" style="margin-left: 20px; margin-right: 10px"/>
             </div>
         </form>
+    </div>
+
+    <div class="col-md-4">
+        <button 
+            class="btn btn-secondary" 
+            style= "margin-left:4px; background: #238945; color:#fff;" 
+            data-dismiss="modal"
+            onclick='exportar(@json($currentYear),@json($currentMonth),@json($nombreEmpleado))'
+            >
+            Exportar
+        </button>
     </div>
 
     <table class="table table-borderless table-responsive-md mt-3" style="font-size: 12px !important">
@@ -84,9 +103,15 @@
                      <td id="action">
 						<div class="row">
 						    <div class="col-md-3">
+                                @if(now()->month <= \Carbon\Carbon::parse($visita->fecha)->month)
 								<a  href="/visitas/edit/{{$visita->id}}"><i class="icono-action far fa-edit"></i>
 									<span class="tooltiptext">Editar</span>
 								</a>
+                                @else
+                                <a href="#">
+                                    <i class="icono-action fas fa-lock"></i>
+                                </a>
+                                @endif
                             </div>
                              <div class="col-md-3">
                                 <a onclick="eliminar({{$visita->id}})" data-toggle="modal" data-target="#modalErase">

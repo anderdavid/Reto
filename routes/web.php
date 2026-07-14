@@ -17,6 +17,7 @@ Route::post('/negocios/store', [NegociosController::class, 'store']);
 Route::get('/negocios/edit/{id}', [NegociosController::class, 'edit']);
 Route::post('/negocios/update/{id}', [NegociosController::class, 'update']);
 Route::get('/negocios/destroy/{id}', [NegociosController::class, 'destroy']);
+Route::get('/negocios/exportar', [NegociosController::class, 'export']);
 /* ;
 Route::get('/negocios/show/{id}', [NegociosController::class, 'show']);
 
@@ -31,6 +32,7 @@ Route::post('/visitas/store', [VisitasController::class, 'store']);
 Route::get('/visitas/edit/{id}', [VisitasController::class, 'edit']);
 Route::post('/visitas/update/{id}', [VisitasController::class, 'update']); 
 Route::get('/visitas/destroy/{id}', [VisitasController::class, 'destroy']);
+Route::get('/visitas/exportar', [VisitasController::class, 'export']);
 
 
 /* 

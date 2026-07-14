@@ -110,9 +110,7 @@ class VisitasController extends Controller
                 ->select('n.categoria', 'n.valor')
                 ->where('n.id',$mVisita->negocio_id)
                 ->first();
-     
-      
-
+        
         $mService = new VisitasService($negocio->valor, $negocio->categoria);
         $mService->setComisionPropuesta();
         $mService->setCalificacion($mVisita->ubicacion, $mVisita->precio, $mVisita->acuerdo);
@@ -127,17 +125,109 @@ class VisitasController extends Controller
 
         return redirect('/visitas/show'); 
 
+    }
 
 
-     /*    echo "visita ".json_encode($mVisita)."<br>";
-        echo "negocio ".json_encode($negocio)."<br>";
+    public function export(Request $request){
 
-        echo "categoria ".$mService->getCategory()."<br>";
-        echo "valor ".$mService->getValorVenta()."<br>";
-        echo "comsion propuesta ".$mService->getComisionPropuesta()."<br>";
-        echo "calificacion puntos ".$mService->getCalificacionPuntos()."<br>";
-        echo "calificacion ".$mService->getCalificacion()."<br>";
-        echo "comision empleado ".$mService->getComisionEmpleado()."<br>"; */
+        $mService = new NegocioService;
+        $comisionTotal = null;
+
+        $year = $request->get('year');
+        $month = $request->get('month');
+        $nombreEmpleado = $request->get('nombreEmpleado');
+
+        $numberMonth = $mService->castMonth($month);
+
+        $months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        $years = ['2026','2027','2028','2029','2030'];
+
+
+        if(isset($year) && isset($month) && isset($nombreEmpleado)){
+           $visitas = DB::table('visitas as v')
+                ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->whereMonth('v.fecha', $numberMonth)
+                ->whereYear('v.fecha', $year)
+                ->where('v.nombreEmpleado', $nombreEmpleado)
+                ->orderBy('v.fecha')
+                ->get();
+
+            $comisionTotal = DB::table('visitas as v')
+                ->select(
+                    DB::raw('SUM(v.comisionEmpleado) as comision'),
+                )
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->whereMonth('v.fecha', $numberMonth)
+                ->whereYear('v.fecha', $year)
+                ->where('v.nombreEmpleado', $nombreEmpleado)
+                ->groupBy('v.nombreEmpleado')
+                ->first();
+
+        }else{
+            $visitas = DB::table('visitas as v')
+                ->select('v.*','n.nombrePropietario','n.telefonoPropietario','n.descripcion','n.direccion','n.categoria','n.valor')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->orderBy('v.fecha')
+                ->get();
+
+            $comisionTotal = DB::table('visitas as v')
+                ->select(
+                    DB::raw('SUM(v.comisionEmpleado) as comision'),
+                )
+                ->join('negocios as n', 'v.negocio_id', '=', 'n.id')
+                ->whereIn("n.categoria",["Venta","Anticres"])
+                ->groupBy('v.nombreEmpleado')
+                ->first();
+
+        }
+
+        return response()->streamDownload(function () use ($visitas,$comisionTotal) {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Empleado', 
+                'Propietario',
+                'Telefono',
+                'Descripcion',
+                'Direccion',
+                'Categoria',
+                'Valor',
+                'Fecha',
+                'Comision propuesta',
+                'Calificacion Puntos',
+                'Calificacion',
+                'Comision Empleado',
+        ]);
+
+            foreach ($visitas as $visita) {
+                fputcsv($file, [
+                    $visita->nombreEmpleado,
+                    $visita->nombrePropietario,
+                    $visita->telefonoPropietario,
+                    $visita->descripcion,
+                    $visita->direccion,
+                    $visita->categoria,
+                    number_format($visita->valor, 0, ',', '.'),
+                    $visita->fecha,
+                    number_format($visita->comisionPropuesta, 0, ',', '.'),
+                    $visita->calificacionPuntos,
+                    $visita->calificacion,
+                    $visita->comisionEmpleado
+                    
+                ]);
+            }
+            fputcsv($file,[]); 
+            fputcsv($file,[]); 
+            fputcsv($file,['Comision Total ',$comisionTotal->comision]);  
+
+
+            fclose($file);
+        }, 'negocios.csv'); 
+ 
 
     }
 

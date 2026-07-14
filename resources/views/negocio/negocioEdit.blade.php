@@ -12,6 +12,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-10">
+           
             <form method="POST" action="/negocios/update/{{$mNegocio->id}}">
                 {{ csrf_field() }}
                 <div class="card">
@@ -34,6 +35,9 @@
                         <div class="form-group">
                             <label for="nombre">Telefono: </label>
                             <input class="form-control" type="text" name="telefonoPropietario" placeholder="Telefono propietario" required="true" value="{{$mNegocio->telefonoPropietario}}">
+                            @isset($errorPhone)
+                            <span style="color:red">{{$errorPhone}}</span>
+                            @endisset
                         </div>
 
 
