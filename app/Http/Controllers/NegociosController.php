@@ -15,7 +15,7 @@ class NegociosController extends Controller
      */
 
     private $categorias = ["Arriendo", "Anticres", "Venta"];
-    private  $valorPunto = 2500;
+    private  $valorPunto = 2000;
 
     public function index(Request $request)
     {
@@ -50,6 +50,7 @@ class NegociosController extends Controller
                 ->whereMonth('n.fecha', $numberMonth)
                 ->whereYear('n.fecha', $year)
                 ->where('n.nombreEmpleado', $nombreEmpleado)
+                ->where('n.esConcertado',true)
                 ->groupBy('n.nombreEmpleado')
                 ->first();
 
@@ -150,6 +151,7 @@ class NegociosController extends Controller
                 ->whereYear('n.fecha', $year)
                 ->where('n.nombreEmpleado', $nombreEmpleado)
                 ->groupBy('n.nombreEmpleado')
+                ->where('n.esConcertado',true)
                 ->first();
             
             

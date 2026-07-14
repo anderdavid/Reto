@@ -60,17 +60,17 @@ class VisitasService{
         $this->calificacionPuntos = $ubicacion + $precio + $acuerdo;
 
         if($this->category == $this->VENTA){
-            if($this->calificacionPuntos > 80 ){
+            if($this->calificacionPuntos > 85 ){  //mayor a 85
                 $this->calificacion = $this->EXCLUSIVIDAD_PLUS;
             }
-            if($this->calificacionPuntos  == 80  ){
+            if($this->calificacionPuntos>=80 && this->calificacionPuntos<85 ){  //entre 80 y 85
                 $this->calificacion = $this->EXCLUSIVIDAD;
             }
-            if( $this->calificacionPuntos >= 73 && $this->calificacionPuntos<80 ){
+            if( $this->calificacionPuntos >= 73 && $this->calificacionPuntos<80 ){ //entre 73 y 80
                 $this->calificacion = $this->INVENTARIO_GENERAL;
             }
             if( $this->calificacionPuntos < 73){
-                $this->calificacion = $this->INVENTARIO_POR_DEFECTO;
+                $this->calificacion = $this->INVENTARIO_POR_DEFECTO; //menor de 73
             }
         }
         if($this->category == $this->ANTICRES){
@@ -101,7 +101,7 @@ class VisitasService{
                 $this->comisionEmpleado =  0.003 * $this->comisionPropuesta;
             }
               if($this->calificacion == $this->INVENTARIO_POR_DEFECTO){
-                $this->comisionEmpleado =  0.002 * $this->comisionPropuesta;
+                $this->comisionEmpleado =  0* $this->comisionPropuesta;
             }
         }
 
@@ -113,7 +113,7 @@ class VisitasService{
                 $this->comisionEmpleado =  0.04* $this->comisionPropuesta;
             }
             if($this->calificacion ==  $this->INVENTARIO_POR_DEFECTO){
-                $this->comisionEmpleado =  0.01* $this->comisionPropuesta;
+                $this->comisionEmpleado =  0* $this->comisionPropuesta;
             }
         }
        

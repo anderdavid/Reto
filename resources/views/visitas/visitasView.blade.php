@@ -103,9 +103,15 @@
                      <td id="action">
 						<div class="row">
 						    <div class="col-md-3">
+                                @if(now()->month <= \Carbon\Carbon::parse($visita->fecha)->month)
 								<a  href="/visitas/edit/{{$visita->id}}"><i class="icono-action far fa-edit"></i>
 									<span class="tooltiptext">Editar</span>
 								</a>
+                                @else
+                                <a href="#">
+                                    <i class="icono-action fas fa-lock"></i>
+                                </a>
+                                @endif
                             </div>
                              <div class="col-md-3">
                                 <a onclick="eliminar({{$visita->id}})" data-toggle="modal" data-target="#modalErase">
