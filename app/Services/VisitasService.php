@@ -63,7 +63,7 @@ class VisitasService{
             if($this->calificacionPuntos > 85 ){  //mayor a 85
                 $this->calificacion = $this->EXCLUSIVIDAD_PLUS;
             }
-            if($this->calificacionPuntos>=80 && this->calificacionPuntos<85 ){  //entre 80 y 85
+            if($this->calificacionPuntos>=80 && $this->calificacionPuntos<85 ){  //entre 80 y 85
                 $this->calificacion = $this->EXCLUSIVIDAD;
             }
             if( $this->calificacionPuntos >= 73 && $this->calificacionPuntos<80 ){ //entre 73 y 80
