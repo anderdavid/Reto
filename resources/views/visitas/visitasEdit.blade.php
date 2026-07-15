@@ -71,15 +71,48 @@
                         </div>
                         <div class="form-group">
                             <label for="nombre">Ubicacion: (%) </label>
-                            <input class="form-control" type="number" name="ubicacion" placeholder="Califique de 0 a 100" required="true" value="{{$visita->ubicacion}}">
+                            <input 
+                                class="form-control" 
+                                type="number" 
+                                name="ubicacion" 
+                                placeholder="Califique de 0 a 50"
+                                min="0" 
+                                max="50"
+                                required="true" 
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('El valor debe estar entre 0 y 50')"
+                                value="{{$visita->ubicacion}}"  
+                            >
                         </div>
                         <div class="form-group">
                             <label for="nombre">Precio:  (%)</label>
-                            <input class="form-control" type="number" name="precio" placeholder="Califique de 0 a 100" required="true" value="{{$visita->precio}}">
+                            <input 
+                                class="form-control" 
+                                type="number" 
+                                name="precio" 
+                                placeholder="Califique de 0 a 30" 
+                                min="0" 
+                                max="30" 
+                                required="true"
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('El valor debe estar entre 0 y 30')"
+                                value="{{$visita->precio}}"
+                            >
                         </div>
                         <div class="form-group">
                             <label for="nombre">Acuerdo:  (%)</label>
-                            <input class="form-control" type="number" name="acuerdo" placeholder="Califique de 0 a 100" required="true" value="{{$visita->acuerdo}}">
+                            <input 
+                                class="form-control" 
+                                type="number" 
+                                name="acuerdo" 
+                                placeholder="Califique de 0 a 20" 
+                                min="0" 
+                                max="20" 
+                                required="true"
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('El valor debe estar entre 0 y 20')"
+                                value="{{$visita->acuerdo}}"
+                            >
                         </div>
                         
                         <div class="form-group">
