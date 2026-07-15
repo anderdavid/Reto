@@ -51,7 +51,7 @@ class VisitasService{
     }
 
     public function setComisionPropuesta(){
-        $this->comisionPropuesta =  (($this->valorVenta * 1.8) / 100);
+        $this->comisionPropuesta =  (($this->valorVenta * 1.6) / 100);
     }
 
    
